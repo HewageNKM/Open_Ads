@@ -1,3 +1,7 @@
+<?php 
+include "./db/db_config.php"
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +10,6 @@
     <title>Home</title>
 </head>
 <body>
-    
+
 </body>
 </html>
