@@ -16,6 +16,7 @@ body {
     width: 100vw;
     height: 100vh;
     display: flex;
+    position: relative;
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
@@ -98,19 +99,80 @@ form button:hover {
     justify-content: flex-start;
 }
 
+.post_modal_disabled{
+    display: none;
+}
+.post_modal{
+    position: absolute;
+    border-radius: 10px;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6); /* This keeps modal content fully visible */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.post_modal_container{
+    position: relative;
+    width: 40vw;
+    min-width: none;
+    background-color: #fff;
+}
+.post_modal_enabled {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal_form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem;
+  }
+  
+  .modal_form input[type="text"],
+  .modal_form textarea {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    width: 100%;
+  }
+  
+  .modal_form input[type="file"] {
+    padding: 0.3rem;
+  }
+  
+  .modal_buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+  }
+  
+  .modal_buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: rgb(73, 255, 146);
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .modal_buttons button:hover {
+    background-color: #4e9e3b;
+  }
+  
 .post_card {
     background-color: #fff;
     padding: 1rem;
     width: 100%;
     max-width: 250px;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.post_card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    border: #000 solid 1px;
 }
 
 .post_card a {

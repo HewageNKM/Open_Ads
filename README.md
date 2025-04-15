@@ -24,7 +24,7 @@ Open Ads is a web application built with **pure PHP** that allows registered use
 *   **Backend:** PHP (Specify version, e.g., PHP 8.0+)
 *   **Database:** MySQL / MariaDB
 *   **Frontend:** HTML, CSS, JavaScript (Vanilla JS or minimal libraries)
-*   **Web Server:** Apache (with `mod_rewrite` enabled) or Nginx
+*   **Web Server:** Apache or Nginx
 
 ## Prerequisites
 
@@ -46,13 +46,7 @@ Follow these steps to get your development environment set up:
     cd open-ads
     ```
 
-2.  **(Optional) Install PHP Dependencies (if using Composer for specific libraries):**
-    *   If you add a `composer.json` file later for helper libraries:
-        ```bash
-        composer install
-        ```
-
-3.  **Configure Environment:**
+2.  **Configure Environment:**
     *   Locate the configuration file (e.g., `config.php`, `includes/config.php`, or similar). You might need to copy an example file if provided:
         ```bash
         # Example if an example config is provided
@@ -65,7 +59,7 @@ Follow these steps to get your development environment set up:
         *   Database Password (e.g., `DB_PASS` or `$db_pass`)
         *   (Optional) Base URL of the application if needed in the config.
 
-4.  **Database Setup:**
+3.  **Database Setup:**
     *   Create a new database in MySQL/MariaDB with the name you specified in the configuration file.
     *   Import the database schema using an SQL file (e.g., `database/schema.sql`):
         ```bash

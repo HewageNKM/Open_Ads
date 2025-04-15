@@ -37,8 +37,9 @@ try {
 
                 if ($stmt->execute()) {
                     // Successfully registered, redirect to login page
-                    $_SESSION['success_message'] = "Registration successful! You can now log in.";
-                    header('Location: login.php');
+                    $_SESSION['user_id'] = "{$user_id}";
+                    $_SESSION['email'] = "{$email}";
+                    header('Location: /auth/login.php');
                     exit;
                 } else {
                     $error = "Something went wrong. Please try again later.";
