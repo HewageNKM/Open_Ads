@@ -1,7 +1,6 @@
 <?php  
 include "./db/db_config.php"
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +17,6 @@ include "./db/db_config.php"
                 <a href="#">Open Ads</a>
                 <nav class="nav_container">
                     <ul class="header_menu">
-                        <li><a href="./index.php">Home</a></li>
                         <li><a href="./auth/login.php">Login</a></li>
                     </ul>
                 </nav>
