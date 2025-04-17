@@ -2,68 +2,73 @@
 // index.php - Complete CRUD with search, modal form, black overlay, centered & modern styling
 include "./db/db_config.php";
 
-// Handle Create and Update
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = $_POST['action'];
-    $title = trim($_POST['title']);
-    $description = trim($_POST['description']);
-    $imageData = null;
+try {
+    // Handle Create and Update
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $action = $_POST['action'];
+        $title = trim($_POST['title']);
+        $description = trim($_POST['description']);
+        $imageData = null;
 
-    // Handle image upload
-    if (!empty($_FILES['image']['tmp_name'])) {
-        $img = file_get_contents($_FILES['image']['tmp_name']);
-        $imageData = base64_encode($img);
-    }
-
-    if ($action === 'create') {
-        $post_id = uniqid();
-        $stmt = $conn->prepare("INSERT INTO posts (post_id, title, description, image) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $post_id, $title, $description, $imageData);
-        $stmt->execute();
-    }
-
-    if ($action === 'update') {
-        $post_id = $_POST['id'];
-        if ($imageData) {
-            $stmt = $conn->prepare("UPDATE posts SET title = ?, description = ?, image = ? WHERE post_id = ?");
-            $stmt->bind_param("ssss", $title, $description, $imageData, $post_id);
-        } else {
-            $stmt = $conn->prepare("UPDATE posts SET title = ?, description = ? WHERE post_id = ?");
-            $stmt->bind_param("sss", $title, $description, $post_id);
+        // Handle image upload
+        if (!empty($_FILES['image']['tmp_name'])) {
+            $img = file_get_contents($_FILES['image']['tmp_name']);
+            $imageData = base64_encode($img);
         }
-        $stmt->execute();
+
+        if ($action === 'create') {
+            $post_id = uniqid();
+            $stmt = $conn->prepare("INSERT INTO posts (post_id, title, description, image) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("ssss", $post_id, $title, $description, $imageData);
+            $stmt->execute();
+        }
+
+        if ($action === 'update') {
+            $post_id = $_POST['id'];
+            if ($imageData) {
+                $stmt = $conn->prepare("UPDATE posts SET title = ?, description = ?, image = ? WHERE post_id = ?");
+                $stmt->bind_param("ssss", $title, $description, $imageData, $post_id);
+            } else {
+                $stmt = $conn->prepare("UPDATE posts SET title = ?, description = ? WHERE post_id = ?");
+                $stmt->bind_param("sss", $title, $description, $post_id);
+            }
+            $stmt->execute();
+        }
+
+        header('Location: ' . $_SERVER['PHP_SELF'] . (!empty($_GET['search']) ? '?search=' . urlencode($_GET['search']) : ''));
+        exit;
     }
 
-    header('Location: ' . $_SERVER['PHP_SELF'] . (!empty($_GET['search']) ? '?search=' . urlencode($_GET['search']) : ''));
-    exit;
-}
+    // Handle Delete
+    if (isset($_GET['action'], $_GET['id']) && $_GET['action'] === 'delete') {
+        $post_id = $_GET['id'];
+        $stmt = $conn->prepare("DELETE FROM posts WHERE post_id = ?");
+        $stmt->bind_param("s", $post_id);
+        $stmt->execute();
+        header('Location: ' . $_SERVER['PHP_SELF'] . (!empty($_GET['search']) ? '?search=' . urlencode($_GET['search']) : ''));
+        exit;
+    }
 
-// Handle Delete
-if (isset($_GET['action'], $_GET['id']) && $_GET['action'] === 'delete') {
-    $post_id = $_GET['id'];
-    $stmt = $conn->prepare("DELETE FROM posts WHERE post_id = ?");
-    $stmt->bind_param("s", $post_id);
-    $stmt->execute();
-    header('Location: ' . $_SERVER['PHP_SELF'] . (!empty($_GET['search']) ? '?search=' . urlencode($_GET['search']) : ''));
-    exit;
-}
-
-// Handle Search Query
-$search = '';
-if (isset($_GET['search']) && trim($_GET['search']) !== '') {
-    $search = trim($_GET['search']);
-    $like = "%{$search}%";
-    $stmt = $conn->prepare("SELECT * FROM posts WHERE title LIKE ? OR description LIKE ? ORDER BY createdAt DESC");
-    $stmt->bind_param("ss", $like, $like);
-    $stmt->execute();
-    $result = $stmt->get_result();
-} else {
-    $result = $conn->query("SELECT * FROM posts ORDER BY post_id DESC");
+    // Handle Search Query
+    $search = '';
+    if (isset($_GET['search']) && trim($_GET['search']) !== '') {
+        $search = trim($_GET['search']);
+        $like = "%{$search}%";
+        $stmt = $conn->prepare("SELECT * FROM posts WHERE title LIKE ? OR description LIKE ? ORDER BY createdAt DESC");
+        $stmt->bind_param("ss", $like, $like);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    } else {
+        $result = $conn->query("SELECT * FROM posts ORDER BY post_id DESC");
+    }
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
