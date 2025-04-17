@@ -376,7 +376,7 @@ try {
                 </div>
                 <div class="form-group">
                     <label for="imgInput">Image</label>
-                    <input type="file" name="image" id="imgInput" accept="image/*">
+                    <input required type="file" name="image" id="imgInput" accept="image/*">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn" onclick="closeModal()">Cancel</button>
